@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/DJBnjack/elastic-worker#readme",
   "dependencies": {
-    "redis": "latest"
+    "node-rest-client": "^2.0.1"
   }
 }

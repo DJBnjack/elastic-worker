@@ -1,27 +1,38 @@
+/*jshint esversion: 6 */
+
 workflows = require('./listener/workflows');
+task_executer = require('./executer/task_executer');
 console.log("Worker started.");
 
 get_and_execute = function() {
-    workflows.get_next_workflow(execute_workflow);
+    workflows.get_next_task(execute_task);
 };
 
-execute_workflow = function(err, data) {
+execute_task = function(err, task) {
     if (err) {
-        console.dir(err);
+        console.log("Error starting task: " + err);
         process.exit(1);
     }
 
-    if (data === null) {
-        console.log("No more workflows to execute, quitting.");
+    if (task === null) {
+        console.log("No more tasks to execute, quitting.");
         process.exit();
     }
 
-    console.log("Executing workflow for " + data);
+    console.log("Executing task:");
+    console.dir(task);
     
-    /* TODO: get actual WF and exectute ;-) */
-
-
-    workflows.flag_workflow_done(data, get_and_execute());
+    task_executer.execute_task(task, () => {
+        workflows.flag_task_done(task, (error) => {
+            if (error) {
+                console.log("Error: " + error);
+                process.exit(1);
+            } else {
+                console.log("Done!");
+                process.exit(0);
+            }
+        });
+    });
 };
 
 get_and_execute();
