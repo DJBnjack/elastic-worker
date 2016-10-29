@@ -87,9 +87,30 @@ execute_io_task = function(size, callback) {
 };
 
 execute_task = function(task, callback) {
-    task_info = task.task_id.split(":");
+    task_info_string = task.task_id.split(":");
+    console.dir(task_info_string);
+
+    if (task_info_string.length < 3) {
+        console.log("Error: Not enough information on task.");
+        callback("Not enough information on task.");
+    }
+
+    task_info = {
+        id: task_info_string[0],
+        type: task_info_string[1],
+        difficulty: task_info_string[2]
+    };
     
-    execute_io_task("S", callback);
+    if (task_info.type === "CC") {
+        execute_cpu_task(task_info.difficulty, callback);
+    } else if (task_info.type === "CN") {
+        execute_network_task(task_info.difficulty, callback);
+    } else if (task_info.type === "CI") {
+        execute_io_task(task_info.difficulty, callback);
+    } else {
+        console.log("Error: Type unknown: " + task_info.type);
+        callback("Type unknown: " + task_info.type);
+    }
 };
 
 exports.execute_task = execute_task;

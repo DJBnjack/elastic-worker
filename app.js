@@ -22,16 +22,20 @@ execute_task = function(err, task) {
     console.log("Executing task:");
     console.dir(task);
     
-    task_executer.execute_task(task, () => {
-        workflows.flag_task_done(task, (error) => {
-            if (error) {
-                console.log("Error: " + error);
-                process.exit(1);
-            } else {
-                console.log("Done!");
-                process.exit(0);
-            }
-        });
+    task_executer.execute_task(task, (execute_error) => {
+        if (execute_error) {
+            console.log("Error: " + execute_error);
+        } else {
+            workflows.flag_task_done(task, (error) => {
+                if (error) {
+                    console.log("Error: " + error);
+                    process.exit(1);
+                } else {
+                    console.log("Done!");
+                    process.exit(0);
+                }
+            });
+        }
     });
 };
 
