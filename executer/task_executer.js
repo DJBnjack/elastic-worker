@@ -6,7 +6,12 @@ execute_wait_task = function(wait_time, callback) {
 };
 
 execute_task = function(task, callback) {
-    execute_wait_task(2000, callback);
+    task_info = task.task_id.split(":");
+    
+    if (task_info.length == 1) {
+        // Default = wait task
+        execute_wait_task(2000, callback);
+    }
 };
 
 exports.execute_task = execute_task;
