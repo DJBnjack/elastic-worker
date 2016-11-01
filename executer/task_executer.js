@@ -90,26 +90,33 @@ execute_task = function(task, callback) {
     task_info_string = task.task_id.split(":");
     console.dir(task_info_string);
 
-    if (task_info_string.length < 3) {
-        console.log("Error: Not enough information on task.");
-        callback("Not enough information on task.");
-    }
+    if (task_info_string.length === 1) {
+        // Test/default task
+        execute_cpu_task("S", callback);
+        
+    } else if (task_info_string.length < 3) {
+        // Not sure??
+        console.log("Error: Not enough information on task: " + task.task_id);
+        callback("Not enough information on task: " + task.task_id);
+    } else if (task_info_string.length === 3) {
+        // True task
 
-    task_info = {
-        id: task_info_string[0],
-        type: task_info_string[1],
-        difficulty: task_info_string[2]
-    };
-    
-    if (task_info.type === "CC") {
-        execute_cpu_task(task_info.difficulty, callback);
-    } else if (task_info.type === "CN") {
-        execute_network_task(task_info.difficulty, callback);
-    } else if (task_info.type === "CI") {
-        execute_io_task(task_info.difficulty, callback);
-    } else {
-        console.log("Error: Type unknown: " + task_info.type);
-        callback("Type unknown: " + task_info.type);
+        task_info = {
+            id: task_info_string[0],
+            type: task_info_string[1],
+            difficulty: task_info_string[2]
+        };
+        
+        if (task_info.type === "CC") {
+            execute_cpu_task(task_info.difficulty, callback);
+        } else if (task_info.type === "CN") {
+            execute_network_task(task_info.difficulty, callback);
+        } else if (task_info.type === "CI") {
+            execute_io_task(task_info.difficulty, callback);
+        } else {
+            console.log("Error: Type unknown: " + task_info.type);
+            callback("Type unknown: " + task_info.type);
+        }
     }
 };
 
