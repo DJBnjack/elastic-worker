@@ -16,8 +16,8 @@ execute_task = function(err, task, callback) {
 
     if (task === null) {
 
-        console.log("No tasks to execute now, waiting for 60 seconds.");
-        setTimeout(callback, 60 * 1000);
+        console.log("No tasks to execute now, waiting for 15 seconds.");
+        setTimeout(callback, 15 * 1000);
 
     } else {
 
