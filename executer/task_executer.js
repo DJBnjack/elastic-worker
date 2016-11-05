@@ -59,6 +59,11 @@ execute_network_task = function(size, callback) {
     req = client.get(url, function (task, response) {
         callback();
     });
+
+    req.on('error', function (err) {
+        console.log("Error gettting " + url + ": " + err);
+        callback();
+    });
 };
 
 execute_io_task = function(size, callback) {
@@ -98,6 +103,7 @@ execute_task = function(task, callback) {
         // Not sure??
         console.log("Error: Not enough information on task: " + task.task_id);
         callback("Not enough information on task: " + task.task_id);
+        
     } else if (task_info_string.length === 3) {
         // True task
 

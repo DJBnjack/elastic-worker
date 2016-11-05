@@ -15,7 +15,7 @@ get_next_task = function(callback) {
     });
 
     req.on('error', function (err) {
-        console.log('request error', err);
+        console.log('Request error: ', err);
         callback(err, null);
     });
 };
@@ -32,7 +32,7 @@ flag_task_done = function(task, callback) {
     });
 
     req.on('error', function (err) {
-        console.log('request error', err);
+        console.log('Request error: ', err);
         callback(err, null);
     });
 };
