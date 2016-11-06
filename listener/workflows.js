@@ -15,7 +15,6 @@ get_next_task = function(callback) {
     });
 
     req.on('error', function (err) {
-        console.log('Request error: ', err);
         callback(err, null);
     });
 };
@@ -26,13 +25,11 @@ flag_task_done = function(task, callback) {
         if (response.statusCode === 200) {
             callback(null, task);
         } else {
-            console.log('StatusCode:', response.statusCode);
             callback(task, null);
         }
     });
 
     req.on('error', function (err) {
-        console.log('Request error: ', err);
         callback(err, null);
     });
 };

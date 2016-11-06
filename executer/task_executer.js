@@ -7,7 +7,6 @@ var Client = require('node-rest-client').Client;
 var client = new Client();
 
 execute_wait_task = function(wait_time, callback) {
-    console.log("Executing wait task, taking " + wait_time/1000 + " seconds.");
     setTimeout(callback, wait_time);
 };
 
@@ -61,8 +60,7 @@ execute_network_task = function(size, callback) {
     });
 
     req.on('error', function (err) {
-        console.log("Error gettting " + url + ": " + err);
-        callback();
+        callback("Error gettting " + url + ": " + err);
     });
 };
 
@@ -100,7 +98,6 @@ execute_task = function(task, callback) {
         
     } else if (task_info_string.length < 3) {
         // Not sure??
-        console.log("Error: Not enough information on task: " + task.task_id);
         callback("Not enough information on task: " + task.task_id);
         
     } else if (task_info_string.length === 3) {
@@ -119,7 +116,6 @@ execute_task = function(task, callback) {
         } else if (task_info.type === "CI") {
             execute_io_task(task_info.difficulty, callback);
         } else {
-            console.log("Error: Type unknown: " + task_info.type);
             callback("Type unknown: " + task_info.type);
         }
     }
