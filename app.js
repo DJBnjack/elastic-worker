@@ -2,7 +2,7 @@
 
 workflows = require('./listener/workflows');
 task_executer = require('./executer/task_executer');
-console.log("Worker started.");
+console.log("[ready] Worker started.");
 
 get_and_execute = function() {
     workflows.get_next_task((err, task) => execute_task(err, task, get_and_execute));
