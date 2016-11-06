@@ -93,7 +93,6 @@ execute_io_task = function(size, callback) {
 
 execute_task = function(task, callback) {
     task_info_string = task.task_id.split(":");
-    console.dir(task_info_string);
 
     if (task_info_string.length === 1) {
         // Test/default task

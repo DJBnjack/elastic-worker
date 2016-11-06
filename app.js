@@ -15,13 +15,12 @@ execute_task = function(err, task, callback) {
 
     } else if (task === null) {
 
-        console.log("No tasks to execute now, waiting for 15 seconds.");
+        console.log("[idle] No tasks to execute now, waiting for 15 seconds.");
         setTimeout(callback, 15 * 1000);
 
     } else {
 
-        console.log("Executing task:");
-        console.dir(task);
+        console.log("[start] Executing task " + task.task_id + " for workflow " + task.workflow_id);
         
         task_executer.execute_task(task, (execute_error) => {
             if (execute_error) {
@@ -33,7 +32,7 @@ execute_task = function(err, task, callback) {
                         console.log("Error: " + error + ", waiting for 15 seconds.");
                         setTimeout(callback, 15 * 1000);
                     } else {
-                        console.log("Done!");
+                        console.log("[finish] Done with task " + task.task_id + " for workflow " + task.workflow_id);
                         callback();
                     }
                 });
