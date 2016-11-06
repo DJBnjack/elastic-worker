@@ -53,7 +53,7 @@ execute_network_task = function(size, callback) {
     if (size === "L") {
         url = "http://ipv4.download.thinkbroadband.com/100MB.zip";
     } else if (size === "M") {
-        url = "http://ipv6.download.thinkbroadband.com/50MB.zip";
+        url = "http://ipv4.download.thinkbroadband.com/50MB.zip";
     }
 
     req = client.get(url, function (task, response) {
