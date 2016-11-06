@@ -35,11 +35,11 @@ execute_cpu_task = function(size, callback) {
 
     count = 0;
     i = 2;
-    primes = [];
+    //primes = [];
 
     while(count<amount) {
         if( isPrime(i) ) {
-            primes.push(i);
+            //primes.push(i);
             count++;
         }
         i++;
