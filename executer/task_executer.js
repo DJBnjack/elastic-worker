@@ -75,11 +75,11 @@ execute_io_task = function(size, callback) {
         });
     });
 
-    amount = 1000000;
+    amount = 100000;
     if (size === "L") {
-        amount = 4000000;
+        amount = 400000;
     } else if (size === "M") {
-        amount = 2000000;
+        amount = 200000;
     }
 
     count = 0;
