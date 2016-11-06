@@ -10,7 +10,7 @@ get_and_execute = function() {
 
 execute_task = function(err, task, callback) {
     if (err) {
-        console.log("Error starting task: " + err + ", waiting for 15 seconds.");
+        console.log("[error] " + err + ", waiting for 15 seconds.");
         setTimeout(callback, 15 * 1000);
 
     } else if (task === null) {
@@ -24,12 +24,12 @@ execute_task = function(err, task, callback) {
         
         task_executer.execute_task(task, (execute_error) => {
             if (execute_error) {
-                console.log("Error: " + execute_error + ", waiting for 15 seconds.");
+                console.log("[error] " + execute_error + ", waiting for 15 seconds.");
                 setTimeout(callback, 15 * 1000);
             } else {
                 workflows.flag_task_done(task, (error) => {
                     if (error) {
-                        console.log("Error: " + error + ", waiting for 15 seconds.");
+                        console.log("[error] " + error + ", waiting for 15 seconds.");
                         setTimeout(callback, 15 * 1000);
                     } else {
                         console.log("[finish] Done with task " + task.task_id + " for workflow " + task.workflow_id);
