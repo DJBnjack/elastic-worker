@@ -48,20 +48,30 @@ execute_cpu_task = function(size, callback) {
 };
 
 execute_network_task = function(size, callback) {
-    url = "http://ipv4.download.thinkbroadband.com/10MB.zip";
-    if (size === "L") {
-        url = "http://ipv4.download.thinkbroadband.com/100MB.zip";
-    } else if (size === "M") {
-        url = "http://ipv4.download.thinkbroadband.com/50MB.zip";
+    url = "https://elasticrandom.blob.core.windows.net/filehost/100MB.zip";
+    reps = 1;
+    if (size == "M") {
+        reps = 2;
+    } else if (size == "L") {
+        reps = 5;
     }
 
-    req = client.get(url, function (task, response) {
-        callback();
-    });
+    var download = function() {
+        req = client.get(url, function (task, response) {
+            reps = reps - 1;
+            if (reps <= 0) {
+                callback();
+            } else {
+                download();
+            }
+        });
 
-    req.on('error', function (err) {
-        callback("Error gettting " + url + ": " + err);
-    });
+        req.on('error', function (err) {
+            callback("Error gettting " + url + ": " + err);
+        });
+    };
+
+    download();
 };
 
 execute_io_task = function(size, callback) {
