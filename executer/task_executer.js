@@ -78,9 +78,9 @@ execute_io_task = function(size, callback) {
     filename = shortid.generate();
     wstream = fs.createWriteStream(filename);
     wstream.on('finish', function () {
-        fs.unlink(filename, () => {
+//        fs.unlink(filename, () => {
             callback();
-        });
+//        });
     });
 
     amount = 100000;
