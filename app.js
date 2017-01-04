@@ -10,7 +10,7 @@ get_and_execute = function() {
 
 var hand_in_results = function(task, callback) {
     workflows.flag_task_done(task, (error) => {
-        if (error) {
+        if (error && error !== "ignore") {
             console.log("worker:error " + error + " while handing in results.");
             setTimeout(() => {hand_in_results(task, callback);}, 1000); // retry after 1 sec
         } else {
