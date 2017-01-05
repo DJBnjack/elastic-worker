@@ -19,6 +19,7 @@ var hand_in_results = function(task, callback) {
             setTimeout(() => {hand_in_results(task, callback);}, 1000); // retry after 1 sec
         } else if (error) {
             console.log("worker:error " + error + " while handing in results.");
+            callback();
         } else {
             console.log("worker:done Finished with task " + task.task_id + " for workflow " + task.workflow_id);
             callback();
