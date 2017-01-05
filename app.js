@@ -5,8 +5,8 @@ task_executer = require('./executer/task_executer');
 console.log("worker:ready Worker started.");
 var Random = require("random-js");
 var random = new Random(Random.engines.mt19937().autoSeed());
-const minWait = 3000; // 3 sec
-const maxWait = 6000; // 6 sec
+const minWait = 10000; // 10 sec
+const maxWait = 90000; // 90 sec
 
 get_and_execute = function() {
     workflows.get_next_task((err, task) => execute_task(err, task, get_and_execute));
@@ -15,7 +15,7 @@ get_and_execute = function() {
 var hand_in_results = function(task, callback) {
     workflows.flag_task_done(task, (error) => {
         if (error && error === "hangup") {
-            console.log("worker:error " + error + " while handing in results.");
+            console.log("worker:error " + error + " while handing in results, retry in 1 second");
             setTimeout(() => {hand_in_results(task, callback);}, 1000); // retry after 1 sec
         } else if (error) {
             console.log("worker:error " + error + " while handing in results.");
