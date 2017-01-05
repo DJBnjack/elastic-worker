@@ -11,7 +11,7 @@ execute_wait_task = function(wait_time, callback) {
 };
 
 isPrime = function(n) {
-    if ( n%1 || n<2 ) return false;
+    if (n < 2 || n != Math.round(n)) return false;
 
     q = Math.sqrt(n);
 

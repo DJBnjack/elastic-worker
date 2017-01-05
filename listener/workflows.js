@@ -22,7 +22,7 @@ get_next_task = function(callback) {
         if (response.statusCode === 200) {
             callback(null, task);
         } else {
-            callback("ignore", null);
+            callback(task, null);
         }
     });
 
@@ -42,7 +42,7 @@ flag_task_done = function(task, callback) {
     });
 
     req.on('error', function (err) {
-        callback(err, null);
+        callback("hangup", null);
     });
 };
 
