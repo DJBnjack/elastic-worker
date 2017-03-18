@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/DJBnjack/elastic-worker#readme",
   "dependencies": {
-    "node-rest-client": "^3.0.3",
+    "node-rest-client": "^3.0.7",
     "random-js": "^1.0.8",
     "randomstring": "^1.1.5",
     "shortid": "^2.2.8"
