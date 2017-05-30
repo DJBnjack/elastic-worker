@@ -6,11 +6,11 @@ var randomstring = require('randomstring');
 var Client = require('node-rest-client').Client;
 var client = new Client();
 
-execute_wait_task = function(wait_time, callback) {
+execute_wait_task = function (wait_time, callback) {
     setTimeout(callback, wait_time);
 };
 
-isPrime = function(n) {
+isPrime = function (n) {
     if (n < 2 || n != Math.round(n)) return false;
 
     q = Math.sqrt(n);
@@ -24,7 +24,7 @@ isPrime = function(n) {
     return true;
 };
 
-execute_cpu_task = function(size, callback) {
+execute_cpu_task = function (size, callback) {
     amount = 400000;
     if (size === "L") {
         amount = 1600000;
@@ -36,8 +36,8 @@ execute_cpu_task = function(size, callback) {
     i = 2;
     //primes = [];
 
-    while(count<amount) {
-        if( isPrime(i) ) {
+    while (count < amount) {
+        if (isPrime(i)) {
             //primes.push(i);
             count++;
         }
@@ -47,7 +47,7 @@ execute_cpu_task = function(size, callback) {
     callback();
 };
 
-execute_network_task = function(size, callback) {
+execute_network_task = function (size, callback) {
     url = "https://elasticrandom.blob.core.windows.net/filehost/100MB.zip";
     reps = 1;
     if (size == "M") {
@@ -56,7 +56,7 @@ execute_network_task = function(size, callback) {
         reps = 5;
     }
 
-    var download = function() {
+    var download = function () {
         req = client.get(url, function (task, response) {
             reps = reps - 1;
             if (reps <= 0) {
@@ -74,13 +74,13 @@ execute_network_task = function(size, callback) {
     download();
 };
 
-execute_io_task = function(size, callback) {
+execute_io_task = function (size, callback) {
     filename = shortid.generate();
     wstream = fs.createWriteStream(filename);
     wstream.on('finish', function () {
-//        fs.unlink(filename, () => {
-            callback();
-//        });
+        //        fs.unlink(filename, () => {
+        callback();
+        //        });
     });
 
     amount = 100000;
@@ -91,7 +91,7 @@ execute_io_task = function(size, callback) {
     }
 
     count = 0;
-    while(count<amount) {
+    while (count < amount) {
         wstream.write(randomstring.generate() + '\n');
         count++;
     }
@@ -99,17 +99,17 @@ execute_io_task = function(size, callback) {
     wstream.end();
 };
 
-execute_task = function(task, callback) {
+execute_task = function (task, callback) {
     task_info_string = task.task_id.split(":");
 
     if (task_info_string.length === 1) {
         // Test/default task
         execute_cpu_task("S", callback);
-        
+
     } else if (task_info_string.length < 3) {
         // Not sure??
         callback("Not enough information on task: " + task.task_id);
-        
+
     } else if (task_info_string.length === 3) {
         // True task
 
@@ -118,15 +118,19 @@ execute_task = function(task, callback) {
             type: task_info_string[1],
             difficulty: task_info_string[2]
         };
-        
-        if (task_info.type === "CC") {
-            execute_cpu_task(task_info.difficulty, callback);
-        } else if (task_info.type === "CN") {
-            execute_network_task(task_info.difficulty, callback);
-        } else if (task_info.type === "CI") {
-            execute_io_task(task_info.difficulty, callback);
-        } else {
-            callback("Type unknown: " + task_info.type);
+
+        try {
+            if (task_info.type === "CC") {
+                execute_cpu_task(task_info.difficulty, callback);
+            } else if (task_info.type === "CN") {
+                execute_network_task(task_info.difficulty, callback);
+            } else if (task_info.type === "CI") {
+                execute_io_task(task_info.difficulty, callback);
+            } else {
+                callback("Type unknown: " + task_info.type);
+            }
+        } catch (e) {
+            callback("worker:error " + err);
         }
     }
 };
