@@ -34,7 +34,7 @@ var hand_in_results = function(task, callback) {
 
 
 execute_task = function(err, task, callback) {
-    if (err) {
+    if (err && task !== null) {
 
         console.log("worker:error " + err);
         hand_in_results(task, callback);
