@@ -37,7 +37,7 @@ execute_task = function(err, task, callback) {
     if (err) {
 
         console.log("worker:error " + err);
-        callback();
+        hand_in_results(task, callback);
 
     } else if (task === null) {
 
@@ -50,7 +50,7 @@ execute_task = function(err, task, callback) {
         task_executer.execute_task(task, (execute_error) => {
             if (execute_error) {
                 console.log("worker:error " + execute_error + " while executing.");
-                callback();
+                hand_in_results(task, callback);
             } else {
                 hand_in_results(task, callback);
             }
