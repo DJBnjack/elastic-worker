@@ -25,35 +25,35 @@ isPrime = function (n) {
 };
 
 execute_cpu_task = function (size, callback) {
-    amount = 400000;
+    var amount = 200000;
+    var reps = 1;
     if (size === "L") {
-        amount = 1600000;
+        reps = 4;
     } else if (size === "M") {
-        amount = 800000;
+        reps = 2;
     }
 
-    count = 0;
-    i = 2;
-    //primes = [];
-
-    while (count < amount) {
-        if (isPrime(i)) {
-            //primes.push(i);
-            count++;
+    for (var times = 0; times < reps; times++) {
+        var count = 0;
+        var i = 2;
+        while (count < amount) {
+            if (isPrime(i)) {
+                count++;
+            }
+            i++;
         }
-        i++;
     }
 
     callback();
 };
 
 execute_network_task = function (size, callback) {
-    url = "https://elasticrandom.blob.core.windows.net/filehost/100MB.zip";
-    reps = 1;
+    var url = "https://elasticrandom.blob.core.windows.net/filehost/100MB.zip";
+    var reps = 1;
     if (size == "M") {
         reps = 2;
     } else if (size == "L") {
-        reps = 5;
+        reps = 4;
     }
 
     var download = function () {
@@ -74,29 +74,49 @@ execute_network_task = function (size, callback) {
     download();
 };
 
+write_to_disk = function (callback) {
+    var filename = shortid.generate();
+    var wstream = fs.createWriteStream(filename);
+    var i = 50000;
+    write();
+    function write() {
+        var ok = true;
+        do {
+            i--;
+            if (i === 0) {
+                // last time!
+                writer.write(randomstring.generate() + '\n', 'utf8', callback);
+            } else {
+                // see if we should continue, or wait
+                // don't pass the callback, because we're not done yet.
+                ok = writer.write(randomstring.generate() + '\n', 'utf8');
+            }
+        } while (i > 0 && ok);
+        if (i > 0) {
+            // had to stop early!
+            // write some more once it drains
+            writer.once('drain', write);
+        }
+    }
+}
+
 execute_io_task = function (size, callback) {
-    filename = shortid.generate();
-    wstream = fs.createWriteStream(filename);
-    wstream.on('finish', function () {
-        //        fs.unlink(filename, () => {
-        callback();
-        //        });
-    });
-
-    amount = 100000;
-    if (size === "L") {
-        amount = 400000;
-    } else if (size === "M") {
-        amount = 200000;
+    if (size === "M") {
+        write_to_disk(() => {
+            write_to_disk(callback);
+        });
+    } else if (size === "L") {
+        write_to_disk(() => {
+            write_to_disk(() => {
+                write_to_disk(() => {
+                    write_to_disk(callback);
+                });
+            });
+        });
+    } else {
+        // size === "S"
+        write_to_disk(callback);
     }
-
-    count = 0;
-    while (count < amount) {
-        wstream.write(randomstring.generate() + '\n');
-        count++;
-    }
-
-    wstream.end();
 };
 
 execute_task = function (task, callback) {
