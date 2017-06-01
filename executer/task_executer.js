@@ -85,17 +85,17 @@ write_to_disk = function (callback) {
             i--;
             if (i === 0) {
                 // last time!
-                writer.write(randomstring.generate() + '\n', 'utf8', callback);
+                wstream.write(randomstring.generate() + '\n', 'utf8', callback);
             } else {
                 // see if we should continue, or wait
                 // don't pass the callback, because we're not done yet.
-                ok = writer.write(randomstring.generate() + '\n', 'utf8');
+                ok = wstream.write(randomstring.generate() + '\n', 'utf8');
             }
         } while (i > 0 && ok);
         if (i > 0) {
             // had to stop early!
             // write some more once it drains
-            writer.once('drain', write);
+            wstream.once('drain', write);
         }
     }
 }
