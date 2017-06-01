@@ -150,7 +150,7 @@ execute_task = function (task, callback) {
                 callback("Type unknown: " + task_info.type);
             }
         } catch (e) {
-            callback("worker:error " + err);
+            callback("worker:error " + e);
         }
     }
 };
