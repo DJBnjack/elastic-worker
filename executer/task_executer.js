@@ -77,7 +77,7 @@ execute_network_task = function (size, callback) {
 write_to_disk = function (callback) {
     var filename = shortid.generate();
     var wstream = fs.createWriteStream(filename);
-    var i = 50000;
+    var i = 100000;
     write();
     function write() {
         var ok = true;
